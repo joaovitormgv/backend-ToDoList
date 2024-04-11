@@ -15,4 +15,8 @@ func Setup(app *fiber.App, h *handlers.Handlers) {
 	app.Post("/api/cadastro/tarefa", h.CreateTarefa)
 
 	app.Get("/api/tarefas", h.GetTarefas)
+
+	app.Put("/api/tarefa/:id", h.UpdateTarefa)
+
+	// app.Patch("/api/tarefa/:id", h.UpdateTarefa)
 }

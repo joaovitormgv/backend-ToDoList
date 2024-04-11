@@ -1,6 +1,9 @@
 package handlers
 
 import (
+	"fmt"
+	"strings"
+
 	_ "github.com/lib/pq"
 
 	"github.com/gofiber/fiber/v2"
@@ -66,4 +69,60 @@ func (h *Handlers) GetTarefas(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(todos)
+}
+
+func (h *Handlers) UpdateTarefa(c *fiber.Ctx) error {
+	todo := &models.ToDo{}
+	err := c.BodyParser(todo)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	//Obter o ID da tarefa da URL
+	todo.Id, err = c.ParamsInt("id")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	// Validar os dados da tarefa
+	//...
+
+	// Construir dinamicamente a consulta SQL UPDATE
+	query := "UPDATE ToDos SET "
+	args := []interface{}{}
+	cont := 1
+	if todo.Title != "" {
+		query += fmt.Sprintf("title = $%d, ", cont)
+		args = append(args, todo.Title)
+		cont++
+	}
+	if todo.UserId != 0 {
+		query += fmt.Sprintf("userid = $%d, ", cont)
+		args = append(args, todo.UserId)
+		cont++
+	}
+	if todo.Completed || !todo.Completed {
+		query += fmt.Sprintf("completed = $%d, ", cont)
+		args = append(args, todo.Completed)
+		cont++
+	}
+	query = strings.TrimSuffix(query, ", ")
+	query += fmt.Sprintf(" WHERE id = $%d", cont)
+	args = append(args, todo.Id)
+
+	// Atualizar tarefa no banco de dados
+	_, err = h.DB.Exec(query, args...)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"message": "Tarefa atualizada com sucesso",
+	})
 }
