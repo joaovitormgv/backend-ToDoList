@@ -13,4 +13,6 @@ func Setup(app *fiber.App, h *handlers.Handlers) {
 	app.Post("/api/cadastro/usuario", h.CreateUser)
 
 	app.Post("/api/cadastro/tarefa", h.CreateTarefa)
+
+	app.Get("/api/tarefas", h.GetTarefas)
 }

@@ -42,3 +42,28 @@ func (h *Handlers) CreateTarefa(c *fiber.Ctx) error {
 		"completed": "false",
 	})
 }
+
+func (h *Handlers) GetTarefas(c *fiber.Ctx) error {
+	// Obter tarefas do banco de dados
+	rows, err := h.DB.Query("SELECT * FROM ToDos")
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	defer rows.Close()
+
+	todos := []models.ToDo{}
+	for rows.Next() {
+		todo := models.ToDo{}
+		err := rows.Scan(&todo.Id, &todo.UserId, &todo.Title, &todo.Completed)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": err.Error(),
+			})
+		}
+		todos = append(todos, todo)
+	}
+
+	return c.JSON(todos)
+}
