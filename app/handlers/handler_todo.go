@@ -141,6 +141,21 @@ func (h *Handlers) UpdateTarefa(c *fiber.Ctx) error {
 		args = append(args, todo.Title)
 		cont++
 	}
+	if todo.Description != "" {
+		query += fmt.Sprintf("description = $%d, ", cont)
+		args = append(args, todo.Description)
+		cont++
+	}
+	if todo.Hora != "" {
+		if !IsValidHora(todo.Hora) {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Hora inválida",
+			})
+		}
+		query += fmt.Sprintf("hora = $%d, ", cont)
+		args = append(args, todo.Hora)
+		cont++
+	}
 	if todo.Completed || !todo.Completed {
 		query += fmt.Sprintf("completed = $%d, ", cont)
 		args = append(args, todo.Completed)
