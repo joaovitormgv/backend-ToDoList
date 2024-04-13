@@ -1,8 +1,6 @@
 package middleware
 
 import (
-	"fmt"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/session"
 )
@@ -18,7 +16,6 @@ func AuthRequired(Store *session.Store) fiber.Handler {
 		}
 
 		if sess.Get("user_id") == nil {
-			fmt.Println(sess.Get("user_id"))
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 				"error": "Não autorizado",
 			})

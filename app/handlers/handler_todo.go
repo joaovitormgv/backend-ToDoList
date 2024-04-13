@@ -152,6 +152,17 @@ func (h *Handlers) UpdateTarefa(c *fiber.Ctx) error {
 }
 
 func (h *Handlers) DeleteTarefa(c *fiber.Ctx) error {
+	// Recuperar a sessão do usuário
+	sess, err := h.Store.Get(c)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	// Obter o ID do usuário da sessão
+	userID := sess.Get("user_id").(int)
+
 	//Obter o ID da tarefa da URL
 	id, err := c.ParamsInt("id")
 	if err != nil {
@@ -160,8 +171,8 @@ func (h *Handlers) DeleteTarefa(c *fiber.Ctx) error {
 		})
 	}
 
-	// Verificar se a tarefa existe no banco de dados
-	row := h.DB.QueryRow("SELECT id FROM ToDos WHERE id = $1", id)
+	// Verificar se a tarefa existe no banco de dados e se pertence ao usuário
+	row := h.DB.QueryRow("SELECT id FROM ToDos WHERE id = $1 and userid = $2", id, userID)
 	err = row.Scan(&id)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
