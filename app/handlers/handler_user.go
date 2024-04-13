@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/joaovitormgv/backend-ToDoList/app/models"
 	_ "github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
@@ -79,4 +80,59 @@ func (h *Handlers) CreateUser(c *fiber.Ctx) error {
 		"name":  user.Name,
 		"email": user.Email,
 	})
+}
+
+func (h *Handlers) AuthenticateUser(c *fiber.Ctx) error {
+	user := &models.User{}
+	err := c.BodyParser(user)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	// Procurar o usuário no banco de dados
+	row := h.DB.QueryRow("SELECT senha FROM usuario WHERE email = $1", user.Email)
+	var hashedPassword string
+	err = row.Scan(&hashedPassword)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"error": "Usuário não encontrado",
+			})
+		} else {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": err.Error(),
+			})
+		}
+	}
+
+	// Comparar a senha informada com a senha armazenada no banco de dados
+	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(user.Password))
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Senha incorreta",
+		})
+	}
+
+	var Store = session.New()
+	sess, err := Store.Get(c)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	sess.Set("user_id", user.Id)
+	err = sess.Save()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"message": "Usuário autenticado",
+	})
+
 }
