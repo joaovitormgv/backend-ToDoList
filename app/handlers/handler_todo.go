@@ -82,7 +82,7 @@ func (h *Handlers) GetTarefas(c *fiber.Ctx) error {
 	todos := []models.ToDo{}
 	for rows.Next() {
 		todo := models.ToDo{}
-		err := rows.Scan(&todo.UserId, &todo.Id, &todo.Title, &todo.Completed)
+		err := rows.Scan(&todo.UserId, &todo.Id, &todo.Title, &todo.Description, &todo.Hora, &todo.Completed)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": err.Error(),
