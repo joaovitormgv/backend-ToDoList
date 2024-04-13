@@ -17,7 +17,7 @@ func Setup(app *fiber.App, h *handlers.Handlers) {
 
 	app.Get("/api/tarefas", middleware.AuthRequired(h.Store), h.GetTarefas)
 
-	app.Put("/api/tarefa/:id", h.UpdateTarefa)
+	app.Put("/api/tarefa/:id", middleware.AuthRequired(h.Store), h.UpdateTarefa)
 
 	app.Delete("/api/tarefa/:id", h.DeleteTarefa)
 }
