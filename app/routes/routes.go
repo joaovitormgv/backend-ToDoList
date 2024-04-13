@@ -6,9 +6,10 @@ import (
 )
 
 func Setup(app *fiber.App, h *handlers.Handlers) {
-
+	// Métodos para manipular usuários
 	app.Post("/api/cadastro/usuario", h.CreateUser)
 
+	// Métodos para manipular tarefas
 	app.Post("/api/cadastro/tarefa", h.CreateTarefa)
 
 	app.Get("/api/tarefas", h.GetTarefas)
