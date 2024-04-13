@@ -2,10 +2,12 @@ package models
 
 // ToDo struct
 type ToDo struct {
-	UserId    int    `json:"userId"`
-	Id        int    `json:"id"`
-	Title     string `json:"title"`
-	Completed bool   `json:"completed"`
+	UserId      int    `json:"userId"`
+	Id          int    `json:"id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Hora        string `json:"hora,omitempty"`
+	Completed   bool   `json:"completed"`
 }
 
 type User struct {

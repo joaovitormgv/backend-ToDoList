@@ -3,12 +3,18 @@ package handlers
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	_ "github.com/lib/pq"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joaovitormgv/backend-ToDoList/app/models"
 )
+
+func IsValidHora(hora string) bool {
+	_, err := time.Parse("15:04", hora)
+	return err == nil
+}
 
 func (h *Handlers) CreateTarefa(c *fiber.Ctx) error {
 	todo := &models.ToDo{}
@@ -28,8 +34,15 @@ func (h *Handlers) CreateTarefa(c *fiber.Ctx) error {
 		todo.Title = "Tarefa sem título"
 	}
 
+	// Verificar se a hora é válida
+	if todo.Hora != "" && !IsValidHora(todo.Hora) {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Hora inválida",
+		})
+	}
+
 	// Inserir tarefa no banco de dados
-	row := h.DB.QueryRow("INSERT INTO ToDos (userid, title, completed) VALUES ($1, $2, $3) RETURNING id", todo.UserId, todo.Title, "false")
+	row := h.DB.QueryRow("INSERT INTO ToDos (userid, title, description, hora, completed) VALUES ($1, $2, $3, $4, $5) RETURNING id", todo.UserId, todo.Title, todo.Description, todo.Hora, "false")
 	var id int
 	err = row.Scan(&id)
 	if err != nil {
