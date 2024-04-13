@@ -10,14 +10,14 @@ func Setup(app *fiber.App, h *handlers.Handlers) {
 	// Métodos para manipular usuários
 	app.Post("/api/cadastro/usuario", h.CreateUser)
 
-	// app.Post("/api/login", h.AuthenticateUser)
+	app.Post("/api/login", h.AuthenticateUser)
 
 	// Métodos para manipular tarefas
 	app.Post("/api/cadastro/tarefa", h.CreateTarefa)
 
-	app.Get("/api/tarefas", middleware.AuthRequired(), h.GetTarefas)
+	app.Get("/api/tarefas", middleware.AuthRequired(h.Store), h.GetTarefas)
 
-	app.Put("/api/tarefa/:id", middleware.AuthRequired(), h.UpdateTarefa)
+	app.Put("/api/tarefa/:id", h.UpdateTarefa)
 
-	app.Delete("/api/tarefa/:id", middleware.AuthRequired(), h.DeleteTarefa)
+	app.Delete("/api/tarefa/:id", h.DeleteTarefa)
 }

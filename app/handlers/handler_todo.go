@@ -47,8 +47,18 @@ func (h *Handlers) CreateTarefa(c *fiber.Ctx) error {
 }
 
 func (h *Handlers) GetTarefas(c *fiber.Ctx) error {
+	// Recuperando a sessão do usuário
+	sess, err := h.Store.Get(c)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	userID := sess.Get("user_id").(int)
+
 	// Obter tarefas do banco de dados
-	rows, err := h.DB.Query("SELECT * FROM ToDos")
+	rows, err := h.DB.Query("SELECT * FROM ToDos WHERE userid = $1", userID)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
@@ -59,7 +69,7 @@ func (h *Handlers) GetTarefas(c *fiber.Ctx) error {
 	todos := []models.ToDo{}
 	for rows.Next() {
 		todo := models.ToDo{}
-		err := rows.Scan(&todo.Id, &todo.UserId, &todo.Title, &todo.Completed)
+		err := rows.Scan(&todo.UserId, &todo.Id, &todo.Title, &todo.Completed)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": err.Error(),

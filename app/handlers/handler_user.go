@@ -12,7 +12,8 @@ import (
 )
 
 type Handlers struct {
-	DB *sql.DB
+	DB    *sql.DB
+	Store *session.Store
 }
 
 func (h *Handlers) CreateUser(c *fiber.Ctx) error {
@@ -92,9 +93,9 @@ func (h *Handlers) AuthenticateUser(c *fiber.Ctx) error {
 	}
 
 	// Procurar o usuário no banco de dados
-	row := h.DB.QueryRow("SELECT senha FROM usuario WHERE email = $1", user.Email)
+	row := h.DB.QueryRow("SELECT senha, id FROM usuario WHERE email = $1", user.Email)
 	var hashedPassword string
-	err = row.Scan(&hashedPassword)
+	err = row.Scan(&hashedPassword, &user.Id)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
@@ -115,8 +116,8 @@ func (h *Handlers) AuthenticateUser(c *fiber.Ctx) error {
 		})
 	}
 
-	var Store = session.New()
-	sess, err := Store.Get(c)
+	// var Store = session.New()
+	sess, err := h.Store.Get(c)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
@@ -134,5 +135,4 @@ func (h *Handlers) AuthenticateUser(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"message": "Usuário autenticado",
 	})
-
 }
