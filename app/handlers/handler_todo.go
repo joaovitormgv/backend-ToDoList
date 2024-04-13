@@ -126,3 +126,34 @@ func (h *Handlers) UpdateTarefa(c *fiber.Ctx) error {
 		"message": "Tarefa atualizada com sucesso",
 	})
 }
+
+func (h *Handlers) DeleteTarefa(c *fiber.Ctx) error {
+	//Obter o ID da tarefa da URL
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	// Verificar se a tarefa existe no banco de dados
+	row := h.DB.QueryRow("SELECT id FROM ToDos WHERE id = $1", id)
+	err = row.Scan(&id)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": "Tarefa não encontrada",
+		})
+	}
+
+	// Excluir tarefa do banco de dados
+	_, err = h.DB.Exec("DELETE FROM ToDos WHERE id = $1", id)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"message": "Tarefa excluída com sucesso",
+	})
+}

@@ -6,9 +6,6 @@ import (
 )
 
 func Setup(app *fiber.App, h *handlers.Handlers) {
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
 
 	app.Post("/api/cadastro/usuario", h.CreateUser)
 
@@ -18,5 +15,5 @@ func Setup(app *fiber.App, h *handlers.Handlers) {
 
 	app.Put("/api/tarefa/:id", h.UpdateTarefa)
 
-	// app.Patch("/api/tarefa/:id", h.UpdateTarefa)
+	app.Delete("/api/tarefa/:id", h.DeleteTarefa)
 }
