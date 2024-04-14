@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"database/sql"
+	"log"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -71,6 +72,7 @@ func (h *Handlers) CreateUser(c *fiber.Ctx) error {
 	var id int
 	err = row.Scan(&id)
 	if err != nil {
+		log.Println(err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
 		})
