@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
 
 	_ "github.com/lib/pq"
 
@@ -15,10 +14,10 @@ import (
 )
 
 func main() {
-	user := os.Getenv("POSTGRES_USER")
-	password := os.Getenv("POSTGRES_PASSWORD")
-	dbname := os.Getenv("POSTGRES_DB")
-	connectionString := fmt.Sprintf("postgres://%s:%s@localhost:5432/%s?sslmode=disable", user, password, dbname)
+	user := "postgres"
+	password := "123456"
+	dbname := "todolist"
+	connectionString := fmt.Sprintf("postgres://%s:%s@localhost:5433/%s?sslmode=disable", user, password, dbname)
 
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
