@@ -13,7 +13,7 @@ func Setup(app *fiber.App, h *handlers.Handlers) {
 	app.Post("/api/login", h.AuthenticateUser)
 
 	// Métodos para manipular tarefas
-	app.Post("/api/cadastro/tarefa", h.CreateTarefa)
+	app.Post("/api/cadastro/tarefa", middleware.AuthRequired(h.Store), h.CreateTarefa)
 
 	app.Get("/api/tarefas", middleware.AuthRequired(h.Store), h.GetTarefas)
 

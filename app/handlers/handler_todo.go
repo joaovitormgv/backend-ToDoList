@@ -18,7 +18,16 @@ func IsValidHora(hora string) bool {
 
 func (h *Handlers) CreateTarefa(c *fiber.Ctx) error {
 	todo := &models.ToDo{}
-	err := c.BodyParser(todo)
+	// Recuperar a sessão do usuário
+	sess, err := h.Store.Get(c)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	userID := sess.Get("user_id").(int)
+
+	err = c.BodyParser(todo)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
@@ -26,13 +35,17 @@ func (h *Handlers) CreateTarefa(c *fiber.Ctx) error {
 	}
 
 	// Validar os dados da tarefa
-	if todo.UserId <= 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "UserId é obrigatório",
-		})
-	} else if todo.Title == "" {
+	if todo.Title == "" {
 		todo.Title = "Tarefa sem título"
 	}
+
+	// Definir o ID do usuário
+	if todo.UserId != 0 && todo.UserId != userID {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Não autorizado",
+		})
+	}
+	todo.UserId = userID
 
 	// Verificar se a hora é válida
 	if todo.Hora != "" && !IsValidHora(todo.Hora) {
