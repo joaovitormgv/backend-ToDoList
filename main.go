@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 
 	_ "github.com/lib/pq"
@@ -13,7 +14,10 @@ import (
 )
 
 func main() {
-	connectionString := "host=localhost port=5432 user=postgres password=123456 dbname=todolist sslmode=disable"
+	user := "postgres"
+	password := "123456"
+	dbname := "todolist"
+	connectionString := fmt.Sprintf("postgres://%s:%s@localhost:5433/%s?sslmode=disable", user, password, dbname)
 
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
