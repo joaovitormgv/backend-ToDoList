@@ -12,6 +12,8 @@ func Setup(app *fiber.App, h *handlers.Handlers) {
 
 	app.Post("/api/login", h.AuthenticateUser)
 
+	app.Post("/api/logout", middleware.AuthRequired(h.Store), h.LogoutUser)
+
 	// Métodos para manipular tarefas
 	app.Post("/api/cadastro/tarefa", middleware.AuthRequired(h.Store), h.CreateTarefa)
 

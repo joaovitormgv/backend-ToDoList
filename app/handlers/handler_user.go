@@ -86,8 +86,23 @@ func (h *Handlers) CreateUser(c *fiber.Ctx) error {
 }
 
 func (h *Handlers) AuthenticateUser(c *fiber.Ctx) error {
+	// Verificar se há uma sessão ativa
+	sess, err := h.Store.Get(c)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	if sess.Get("user_id") != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Ainda há uma sessão ativa",
+		})
+	}
+
+	// Parsear o corpo da requisição para um struct User
 	user := &models.User{}
-	err := c.BodyParser(user)
+	err = c.BodyParser(user)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
@@ -119,7 +134,7 @@ func (h *Handlers) AuthenticateUser(c *fiber.Ctx) error {
 	}
 
 	// var Store = session.New()
-	sess, err := h.Store.Get(c)
+	sess, err = h.Store.Get(c)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
@@ -137,4 +152,26 @@ func (h *Handlers) AuthenticateUser(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"message": "Usuário autenticado",
 	})
+}
+
+func (h *Handlers) LogoutUser(c *fiber.Ctx) error {
+	sess, err := h.Store.Get(c)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	sess.Destroy()
+	err = sess.Save()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"message": "Usuário deslogado",
+	})
+
 }
