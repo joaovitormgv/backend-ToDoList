@@ -18,8 +18,22 @@ type Handlers struct {
 }
 
 func (h *Handlers) CreateUser(c *fiber.Ctx) error {
+	// Verificar se há uma sessão ativa
+	sess, err := h.Store.Get(c)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	if sess.Get("user_id") != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Ainda há uma sessão ativa",
+		})
+	}
+
 	user := &models.User{}
-	err := c.BodyParser(user)
+	err = c.BodyParser(user)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
