@@ -33,6 +33,7 @@ func main() {
 		Store: store,
 	}
 	app := fiber.New()
+	app.Static("/", "./public")
 	app.Use(middleware.CorsMiddleware())
 	routes.Setup(app, h)
 	app.Listen(":3000")

@@ -1,0 +1,43 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(to bottom, #3a9fe3, #9050aa);
+  }
+
+  .adicionar input {
+    padding: 5px;
+    margin-right: 5px;
+  }
+  
+  .adicionar button {
+    padding: 5px 10px;
+    background-color: #3a9fe3;
+    border: none;
+    color: white;
+  }
+  
+  .login-link {
+    margin-top: 20px;
+    font-size: 14px;
+  }
+
+  .container {
+    text-align: center;
+    background-color:transparent;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%; 
+    max-width: 400px; 
+    margin: auto; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 50%; 
+  }  
+
+  .hidden {
+    display: none;
+  }
