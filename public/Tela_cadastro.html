@@ -10,15 +10,13 @@
 <body>
     <div id="Form_cadastro">
         <h1>Inscreva-se</h1>
-        <form action="">
+        <form id="form-cadastro" action="">
             <label for="name">
                 <input type="text" name="name" id="name" placeholder="Nome">
             </label>
-
             <label for="email">
                 <input type="text" name="email" id="email" placeholder="E-mail">
             </label>
-
             <label for="password">
                 <input type="password" name="password" id="password" placeholder="Senha">
             </label>
@@ -26,4 +24,35 @@
             <p class="fonte_pequena"><a href="Tela_login.html">Já possui cadastro? Conecte-se</a></p>
         </form>
     </div>
+    <script>
+        document.getElementById('form-cadastro').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            fetch('http://localhost:3000/api/cadastro/usuario', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    password: password,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Erro: ' + data.error);
+                } else {
+                    alert('Cadastro bem sucedido!');
+                    window.location.href = 'Tela_login.html';
+                }
+            })
+            .catch((error) => {
+                console.error('Erro:', error);
+            });
+        });
+    </script>
 </body>
