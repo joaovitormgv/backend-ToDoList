@@ -10,9 +10,11 @@
 <body>
     <div>
         <h1>Conecte-se</h1>
-        <input id="email" type="email" placeholder="E-mail">
-        <input id="password" type="password" placeholder="Senha">
-        <a href="Tela_lista.html"><button>Enviar</button></a>
+        <form id="login-form">
+            <input id="email" type="email" placeholder="E-mail">
+            <input id="password" type="password" placeholder="Senha">
+            <a href="Tela_lista.html"><button>Enviar</button></a>
+        </form>
         <p class="fonte_pequena"><a href="Tela_cadastro.html">Criar nova conta</a></p>
     </div>
     <script>
@@ -35,9 +37,7 @@
                 if (data.error) {
                     alert('Erro: ' + data.error);
                 } else {
-                    alert('Login bem sucedido!');
-                    // Aqui você pode redirecionar o usuário ou fazer outra ação
-                }
+                    alert('Login bem sucedido!');                }
             })
             .catch((error) => {
                 console.error('Erro:', error);
