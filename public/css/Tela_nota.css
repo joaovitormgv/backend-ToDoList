@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: linear-gradient(#8C52FF, #5CE1E6);
+    display: flex;
+
+  }
+
+.container {
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: #101010;
+    text-align: center;
+}
+
+.titulo_nota {
+    background-color: rgba(211, 231, 250, 0.8);
+    padding-left: 90px;
+    padding-right: 90px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 15px;
+}
+
+.user_nota {
+    background-color: rgba(211, 231, 250, 0.8);
+    padding: 40px;
+    margin-top: 40px;
+    border-radius: 15px;
+}
+
+.user_nota > textarea {
+    width: fit-content;
+    padding: 30px;
+    outline: none;
+    font-size: 18px;
+    border: 1px solid #ddd;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #FA5608;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 9px;
+    font-size: 16px;
+}

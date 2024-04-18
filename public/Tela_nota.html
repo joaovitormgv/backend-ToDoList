@@ -1,69 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do Lista</title>
+    <link rel="stylesheet" href="css/Tela_nota.css">
+</head>
+<body>
+    <div class="container">
+        <div class="titulo_nota">
+            <h1 id="titulo">Minhas notas<br>#TarefaX</h1>    
+        </div>
+        <div class="user_nota">
+            <textarea id="nota" placeholder="Digite uma nota..."></textarea>
+            <br>
+            <button type="submit">Salvar</button>
+        </div>
+    </div>
+</body>
 <script>
-    // Função para carregar os detalhes da tarefa
-function carregarDetalhesTarefa(idTarefa) {
-    fetch(`/api/tarefa/${idTarefa}`)
-        .then(response => response.json())
-        .then(data => {
-            // Preenche o título
-            document.getElementById("titulo").innerText = data.title;
+        // Função para carregar os detalhes da tarefa
+    function carregarDetalhesTarefa(idTarefa) {
+        fetch(`/api/tarefa/${idTarefa}`)
+            .then(response => response.json())
+            .then(data => {
+                // Preenche o título
+                document.getElementById("titulo").innerText = data.title;
 
-            // Verifica se há uma descrição
-            if (data.description) {
-                // Se houver uma descrição, preenche o campo de texto com ela
-                document.getElementById("nota").value = data.description;
-            } else {
-                // Se não houver uma descrição, deixa o campo de texto vazio
-                document.getElementById("nota").placeholder = "Digite uma nota...";
-            }
-        })
-        .catch(error => console.error("Erro ao carregar detalhes da tarefa:", error));
-    }
-
-// Obter o id da tarefa
-const urlParams = new URLSearchParams(window.location.search);
-const idTarefa = urlParams.get("id");
-
-// Id da tarefa foi fornecido na URL
-if (idTarefa) {
-    carregarDetalhesTarefa(idTarefa);
-} else {
-    // Se não houver um id de tarefa, exibe uma mensagem de erro
-    console.error("ID da tarefa não fornecido na URL.");
-}
-
-// Evento de clique no botão de salvar
-document.getElementById("salvar").addEventListener("click", function() {
-    var nota = document.getElementById("nota").value;
-    var titulo = document.getElementById("titulo").innerText;
-
-    salvarNota(idTarefa, titulo, nota);
-});
-
-// Função para salvar a nota
-function salvarNota(idTarefa, titulo, nota) {
-    // Verifica se a nota não é vazia ou "Digite uma nota..."
-    if (nota && nota !== "Digite uma nota...") {
-        fetch(`/api/tarefa/${idTarefa}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                title: titulo,
-                description: nota
+                // Verifica se há uma descrição
+                if (data.description) {
+                    // Se houver uma descrição, preenche o campo de texto com ela
+                    document.getElementById("nota").value = data.description;
+                } else {
+                    // Se não houver uma descrição, deixa o campo de texto vazio
+                    document.getElementById("nota").placeholder = "Digite uma nota...";
+                }
             })
-        })
-        .then(response => {
-            if (response.ok) {
-                alert("Nota salva com sucesso!");
-            } else {
-                alert("Erro ao salvar a nota.");
-            }
-        })
-        .catch(error => console.error("Erro ao salvar a nota:", error));
-    } else {
-        alert("A nota não pode ser vazia.");
-    }
-}
+            .catch(error => console.error("Erro ao carregar detalhes da tarefa:", error));
+        }
 
-</script>
+    // Obter o id da tarefa
+    const urlParams = new URLSearchParams(window.location.search);
+    const idTarefa = urlParams.get("id");
+
+    // Id da tarefa foi fornecido na URL
+    if (idTarefa) {
+        carregarDetalhesTarefa(idTarefa);
+    } else {
+        // Se não houver um id de tarefa, exibe uma mensagem de erro
+        console.error("ID da tarefa não fornecido na URL.");
+    }
+
+    // Evento de clique no botão de salvar
+    document.getElementById("salvar").addEventListener("click", function() {
+        var nota = document.getElementById("nota").value;
+        var titulo = document.getElementById("titulo").innerText;
+
+        salvarNota(idTarefa, titulo, nota);
+    });
+
+    // Função para salvar a nota
+    function salvarNota(idTarefa, titulo, nota) {
+        // Verifica se a nota não é vazia ou "Digite uma nota..."
+        if (nota && nota !== "Digite uma nota...") {
+            fetch(`/api/tarefa/${idTarefa}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: titulo,
+                    description: nota
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Nota salva com sucesso!");
+                } else {
+                    alert("Erro ao salvar a nota.");
+                }
+            })
+            .catch(error => console.error("Erro ao salvar a nota:", error));
+        } else {
+            alert("A nota não pode ser vazia.");
+        }
+    }
+
+    </script>
+</body>
