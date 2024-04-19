@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Tarefa</title>
+    <link rel="stylesheet" href="css/Tela_adicionar.css">
+</head>
+<body>
+    <div class="Corpo">
+        <div class="div">
+            <h1>Adicionar Tarefa</h1>
+        </div>
+        <div class="container">
+            <label for="nomeTarefa">Nome da Tarefa:</label>
+            <input type="text" id="nomeTarefa" name="nomeTarefa">
+
+            <label for="horarioTarefa">Horário da Tarefa:</label>
+            <input type="text" id="horarioTarefa" name="horarioTarefa">
+
+            <label for="descricaoTarefa">Descrição da Tarefa:</label>
+            <textarea id="descricaoTarefa" name="descricaoTarefa" rows="4"></textarea>
+
+            <button id="adicionarTarefa">Adicionar Tarefa</button>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+    <script>
+        document.getElementById('adicionarTarefa').addEventListener('click', function() {
+            const nomeTarefa = document.getElementById('nomeTarefa').value;
+            const horarioTarefa = document.getElementById('horarioTarefa').value;
+            const descricaoTarefa = document.getElementById('descricaoTarefa').value;
+
+            taskManager.adicionarTask({ title: nomeTarefa, time: horarioTarefa, descricao: descricaoTarefa });
+            window.location.href = 'Tela_lista.html';
+        });
+    </script>
+</body>
+</html>

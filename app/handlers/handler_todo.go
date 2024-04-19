@@ -84,7 +84,7 @@ func (h *Handlers) GetTarefas(c *fiber.Ctx) error {
 	userID := sess.Get("user_id").(int)
 
 	// Obter tarefas do banco de dados
-	rows, err := h.DB.Query("SELECT * FROM ToDos WHERE userid = $1", userID)
+	rows, err := h.DB.Query("SELECT * FROM ToDos WHERE userid = $1 ORDER BY hora", userID)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
@@ -105,6 +105,39 @@ func (h *Handlers) GetTarefas(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(todos)
+}
+
+func (h *Handlers) GetTarefa(c *fiber.Ctx) error {
+	// Recuperar a sessão do usuário
+	sess, err := h.Store.Get(c)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	// Obter o ID do usuário da sessão
+	userID := sess.Get("user_id").(int)
+
+	// Obter o ID da tarefa da URL
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	// Obter a tarefa do banco de dados
+	row := h.DB.QueryRow("SELECT * FROM ToDos WHERE id = $1 and userid = $2", id, userID)
+	todo := models.ToDo{}
+	err = row.Scan(&todo.UserId, &todo.Id, &todo.Title, &todo.Description, &todo.Hora, &todo.Completed)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": "Tarefa não encontrada",
+		})
+	}
+
+	return c.JSON(todo)
 }
 
 func (h *Handlers) UpdateTarefa(c *fiber.Ctx) error {

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do Lista</title>
+    <link rel="stylesheet" href="css/Tela_inicial.css">
+</head>
+<body>
+    <div class="Corpo">
+        <div class="Titulo">
+            <h1>To Do Lista</h1>
+        </div>
+        <div class="Lista_inicial"> 
+            <box_aux>
+                <lista_aux>Acordar<span> 7:00</span></lista_aux>
+                <lista_aux>Café da manhã<span> 7:30</span></lista_aux>
+                <lista_aux>Exercitar<span> 8:00</span></lista_aux>
+                <lista_aux>Trabalho<span> 9:00</span></lista_aux>
+            </box_aux>
+            <button class="botao" id="Login"><a href="Tela_login.html">Login</a></button>
+            <p class="fonte_pequena">Não tem uma conta? <a href="Tela_cadastro.html">Faça seu cadastro aqui</a></p>
+        </div>
+    </div>
+    <script>
+        document.getElementById('Login').addEventListener('click', function() {
+            window.location.href = 'Tela_login.html'; 
+        });
+    </script>
+    <script src="js/script.js"></script>
+</body>
+</html>
