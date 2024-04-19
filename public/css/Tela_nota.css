@@ -35,11 +35,9 @@ body {
 
 .user_nota > textarea {
     width: fit-content;
-    padding: 30px;
     outline: none;
     font-size: 18px;
     border: 1px solid #ddd;
-    color: #777;
     margin-bottom: 10px;
 }
 
@@ -53,4 +51,18 @@ button {
     cursor: pointer;
     padding: 9px;
     font-size: 16px;
+}
+
+textarea {
+    background-image: url(../assets/background.png);
+    background-color: transparent;
+    border-style: none;
+    border-color: Transparent;
+    overflow: auto;
+    outline: none;
+  }
+
+textarea:focus, input:focus {
+    box-shadow: 0 0 0 0;
+    outline: 0;
 }
