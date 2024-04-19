@@ -10,25 +10,20 @@
 <body>
     <div class="Corpo">
         <div class="div">
-            <h1>Minhas Tarefas de Lista</h1>
+            <h1>Minha Lista de tarefas </h1>
         </div>
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Pesquisar por nome...">
-            <button id="searchButton">Pesquisar</button>
+        <div class="Barra_de_pesquisa">
+            <input type="text" id="Botão_de_pesquisar" placeholder="Pesquisar atividade">
+            <button id="Botão_de_pesquisar">Pesquisar</button>
         </div>
-        <div class="container" id="taskList">
-            <h1>Lista To Do</h1>
+        <div class="container" id="Lista_de_tarefas">
+            <!-- Tudo aqui está sendo exibido por causa do javascript, ou seja, olhe o script.js-->
         </div>
-        <div class="buttons-container">
-            <button id="addTaskButton">Adicionar Tarefa</button>
-            <button id="removeTaskButton">Remover Tarefa</button>
+        <div class="butãos_container">
+            <button id="Ir_para_a_pagina_de_adicionar_tarefa">Adicionar Tarefa</button>
+            <button id="botaoremoverTarefa">Remover Tarefa</button>
         </div>
-        <script>
-            document.getElementById('addTaskButton').addEventListener('click', function() {
-                window.location.href = 'Tela_adicionar.html';
-            });
-        </script>
+        <script src="js/script_lista.js" type="module"></script>
     </div>
-    <script src="js/script_lista.js" type="module"></script>
 </body>
 </html>

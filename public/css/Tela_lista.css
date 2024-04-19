@@ -6,11 +6,10 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(to bottom, #8C52FF, #5CE1E6);
+    background: linear-gradient(to bottom, #8b52ff, #5CE1E6);
 }
 
 h1{
-    margin-bottom: 20px;
     text-align: center;
 }
 
@@ -19,15 +18,13 @@ h1{
     flex-direction: column;
     align-items: center;
     background-color: transparent;
-    height: 100vh;
+    height: 90vh;
 }
 
 .div {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    width: 80%;
     background-color: rgba(211, 231, 250, 0.8);
     border-radius: 15px;
     margin-bottom: 50px;
@@ -35,12 +32,11 @@ h1{
     width: 400px
 }
 
-.buttons-container {
-    margin-top: auto; 
+.butãos_container {
+    margin-top: auto;
 }
 
 .container {
-    width: 80%;
     background-color: rgba(211, 231, 250, 0.8);
     border-radius: 15px;
     height: 400px;
@@ -48,61 +44,45 @@ h1{
     width: 400px
 }
 
-.fonte_pequena {
-    font-size: 12px;
-}
-
-ul {
-    list-style-type: none; 
-    padding: 0; 
-}
-
-ul li {
-    font-size: 20px; 
-}
-
-.task-item {
+.Tarefa {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
     padding: 30px;
-    border-radius: 15px;
-    width: 90%;
     max-width: 400px;
     margin: auto;
 }
 
-.task-item p {
-    margin: 0;
+.Tarefa p {
+    margin: -20px;
     font-size: 18px;
 }
 
-.search-bar {
+#Lista_de_tarefas {
+    max-height: 300px;
+    overflow-y: auto; 
+    overflow-x: hidden; 
+}
+
+.Barra_de_pesquisa {
+    margin-bottom: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 10px;
 }
 
-.search-bar input {
-    padding: 5px;
-    margin-right: 5px;
+.Barra_de_pesquisa input {
+    padding: 5px 64px;
+    font-size: 16px;
 }
 
-.search-bar button {
+.Barra_de_pesquisa button {
     padding: 5px 10px;
-    background-color: #008CBA;
+    background-color: #FA5608;
     color: white;
     border: none;
     cursor: pointer;
 }
 
-.search-bar button:hover {
-    background-color: #005f6b;
-}
-
-#taskList {
-    max-height: 300px;
-    overflow-y: auto; 
-    overflow-x: hidden;
+.Barra_de_pesquisa button:hover {
+    background-color: #8b52ff;
 }

@@ -5,32 +5,30 @@ document.addEventListener('DOMContentLoaded', async function () {
     function carregarTarefas() {
         backendAPI.get('api/tarefas')
             .then(data => {
-                const lista = document.getElementById('taskList');
+                const lista = document.getElementById('Lista_de_tarefas');
                 lista.innerHTML = '';
 
                 data.forEach(tarefa => {
-                    const item = document.createElement('li');
+                    const div = document.createElement('div');
+                    div.classList.add('tarefa');
+                    div.innerHTML = `
+                        <input type="checkbox" id="tarefa-${tarefa.id}" ${tarefa.completed ? 'checked' : ''}>
+                        <p >${tarefa.title}</p>
+                        <p>${tarefa.hora}</p>
+                    `;
                     
-                    const nomeSpan = document.createElement('span');
-                    nomeSpan.textContent = tarefa.title;
-                    const horarioSpan = document.createElement('span');
-                    horarioSpan.textContent = tarefa.hora;
-                    // checkbox para marcar a tarefa como concluída com base em completed no backend
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.checked = tarefa.completed;
-                    checkbox.addEventListener('change', async function () {
-                        await backendAPI.put(`api/tarefa/${tarefa.id}`, {
-                            completed: checkbox.checked
-                        });
+                    // Adicionar evento para marcar tarefa como concluída
+                    div.querySelector('input').addEventListener('change', async function () {
+                        tarefa.completed = this.checked;
+                        await backendAPI.put(`api/tarefa/${tarefa.id}`, tarefa);
                         carregarTarefas();
                     });
+                    
+                    if (tarefa.completed) {
+                        div.style.textDecoration = 'line-through';
+                    }
 
-                    item.appendChild(checkbox);
-                    item.appendChild(nomeSpan);
-                    item.appendChild(horarioSpan);
-
-                    lista.appendChild(item);
+                    lista.appendChild(div);
                 });
             })
             .catch(error => console.error('Erro ao carregar tarefas:', error));
@@ -39,3 +37,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Carregar tarefas
     carregarTarefas();
     });
+
+    // Adicionar evento para ir para a página de adicionar tarefa
+    document.getElementById('Ir_para_a_pagina_de_adicionar_tarefa').addEventListener('click', function() {
+        window.location.href = 'Tela_adicionar.html'; 
+    });
+
