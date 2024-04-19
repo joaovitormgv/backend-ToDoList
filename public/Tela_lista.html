@@ -1,24 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TODO App</title>
-  <link rel="stylesheet" href="css/Tela_lista.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO App</title>
+    <link rel="stylesheet" href="css/Tela_lista.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Teste 2</h1>
-    <div class="adicionar">
-      <input type="text" id="digitar_usuario" placeholder="Nome do usuário">
-      <button id="Botão_add_User">Adicionar Usuário</button>
+    <div class="Corpo">
+        <div class="div">
+            <h1>Minhas Tarefas de Lista</h1>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Pesquisar por nome...">
+            <button id="searchButton">Pesquisar</button>
+        </div>
+        <div class="container" id="taskList">
+            <h1>Lista To Do</h1>
+        </div>
+        <div class="buttons-container">
+            <button id="addTaskButton">Adicionar Tarefa</button>
+            <button id="removeTaskButton">Remover Tarefa</button>
+        </div>
+        <script>
+            document.getElementById('addTaskButton').addEventListener('click', function() {
+                window.location.href = 'Tela_adicionar.html';
+            });
+        </script>
     </div>
-    <div class="adicionar">
-      <button id="Lista_Users">Listar Usuários</button>
-      <ul id="User_lista" class="hidden"></ul>
-    </div>
-  </div>
-  <script src="js/script.js"></script>
+    <script src="js/script.js"></script>
 </body>
-</html> 
+</html>
