@@ -84,7 +84,7 @@ func (h *Handlers) GetTarefas(c *fiber.Ctx) error {
 	userID := sess.Get("user_id").(int)
 
 	// Obter tarefas do banco de dados
-	rows, err := h.DB.Query("SELECT * FROM ToDos WHERE userid = $1", userID)
+	rows, err := h.DB.Query("SELECT * FROM ToDos WHERE userid = $1 ORDER BY hora", userID)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
