@@ -10,11 +10,16 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 data.forEach(tarefa => {
                     const div = document.createElement('div');
-                    div.classList.add('tarefa');
+                    div.classList.add('Tarefa');
                     div.innerHTML = `
+                    <div class="dados">
                         <input type="checkbox" id="tarefa-${tarefa.id}" ${tarefa.completed ? 'checked' : ''}>
-                        <p >${tarefa.title}</p>
+                        <p>${tarefa.title}</p>
+                    </div>
+                    <div class="dados">
                         <p>${tarefa.hora}</p>
+                        <button id="deletar_tarefa">X</button>
+                    </div>
                     `;
                     
                     // Adicionar evento para marcar tarefa como concluída

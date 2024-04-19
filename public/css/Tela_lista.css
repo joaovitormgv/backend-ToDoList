@@ -47,13 +47,23 @@ h1{
 .Tarefa {
     display: flex;
     justify-content: space-between;
-    padding: 30px;
     max-width: 400px;
-    margin: auto;
+}
+
+.Tarefa input {
+    margin-right: 10px;
+}
+
+.Tarefa .dados {
+    display: flex;
+    align-items: center;
+}
+
+.Tarefa .dados p {
+    margin-right: 10px;
 }
 
 .Tarefa p {
-    margin: -20px;
     font-size: 18px;
 }
 
