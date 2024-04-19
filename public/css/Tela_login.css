@@ -18,6 +18,8 @@ div {
     border-radius: 15px;
     color: #101010;
     text-align: center;
+    display: flex;
+    flex-direction: column;
 }
 
 input {
@@ -26,6 +28,7 @@ input {
     margin-bottom: 15px;
     padding: 7px;
     border: none;
+    width: 100%;
 }
 
 button {
@@ -44,5 +47,5 @@ button {
 
 a {
     text-decoration: none;
-    color: #2980F2;
+    color: #0000EE;
 }
