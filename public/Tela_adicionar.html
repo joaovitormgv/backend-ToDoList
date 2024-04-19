@@ -25,16 +25,7 @@
             <button id="adicionarTarefa">Adicionar Tarefa</button>
         </div>
     </div>
-    <script src="js/script.js"></script>
-    <script>
-        document.getElementById('adicionarTarefa').addEventListener('click', function() {
-            const nomeTarefa = document.getElementById('nomeTarefa').value;
-            const horarioTarefa = document.getElementById('horarioTarefa').value;
-            const descricaoTarefa = document.getElementById('descricaoTarefa').value;
+    <script src="js/script_adicionar.js" type="module"></script>
 
-            taskManager.adicionarTask({ title: nomeTarefa, time: horarioTarefa, descricao: descricaoTarefa });
-            window.location.href = 'Tela_lista.html';
-        });
-    </script>
 </body>
 </html>
