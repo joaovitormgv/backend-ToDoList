@@ -6,7 +6,23 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(to bottom, #8b52ff, #5CE1E6);
+    background: linear-gradient(45deg, #d2001a, #7462ff, #23d5ab);
+    background-size: 300% 300%;
+    animation: color 12s ease-in-out infinite;
+    display: flex;
+    }
+
+@keyframes color{
+  0% {
+      background-position: 0 50%;
+  }
+
+  50% {
+      background-position: 100% 50%;
+  }   
+  100% {
+      background-position: 0 50%;
+  }
 }
 
 h1{

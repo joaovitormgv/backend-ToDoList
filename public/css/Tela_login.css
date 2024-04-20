@@ -3,10 +3,24 @@ body {
     margin: 0;
     padding: 0;
     height: 100vh;
-    background: linear-gradient(to bottom, #8C52FF, #5CE1E6);
+    background: linear-gradient(45deg, #d2001a, #7462ff, #23d5ab);
+    background-size: 300% 300%;
+    animation: color 12s ease-in-out infinite;
     display: flex;
-
   }
+
+@keyframes color{
+    0% {
+        background-position: 0 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }   
+    100% {
+        background-position: 0 50%;
+    }
+}
 
 div {
     background-color: rgba(211, 231, 250, 0.8);
@@ -20,6 +34,7 @@ div {
     text-align: center;
     display: flex;
     flex-direction: column;
+    min-width: 200px;
 }
 
 input {
