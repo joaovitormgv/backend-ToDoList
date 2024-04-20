@@ -140,3 +140,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         window.location.href = 'Tela_adicionar.html'; 
     });
 
+    // Adicionar evento de logout
+    document.getElementById('Logout').addEventListener('click', async function() {
+        await backendAPI.post('api/logout');
+        alert('Você foi deslogado com sucesso!');
+        window.location.href = 'Tela_login.html';
+    });
+
