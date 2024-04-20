@@ -23,6 +23,7 @@ export async function carregarTarefas(search = '') {
                     </div>
                     <div class="dados">
                         <button id="deletar_tarefa">X</button>
+                        <a href="Tela_nota.html?id=${tarefa.id}"><button id="editar_tarefa">Notas</button></a>
                     </div>
                     `;
                 } else {
@@ -34,6 +35,7 @@ export async function carregarTarefas(search = '') {
                     <div class="dados">
                         <p>${tarefa.hora}</p>
                         <button id="deletar_tarefa">X</button>
+                        <a href="Tela_nota.html?id=${tarefa.id}"><button id="editar_tarefa">Notas</button></a>
                     </div>
                     `;
                 }
