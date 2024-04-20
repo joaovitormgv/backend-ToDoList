@@ -6,7 +6,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(to bottom, #8C52FF, #5CE1E6);
+    background: #8C52FF;
 }
 
 h1 {

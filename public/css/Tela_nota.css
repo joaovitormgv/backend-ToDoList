@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     height: 100vh;
-    background: linear-gradient(#8C52FF, #5CE1E6);
+    background: #8C52FF;
     display: flex;
 
   }
@@ -37,7 +37,6 @@ body {
     width: fit-content;
     outline: none;
     font-size: 18px;
-    border: 1px solid #ddd;
     margin-bottom: 10px;
 }
 
