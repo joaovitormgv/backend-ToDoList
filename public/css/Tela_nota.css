@@ -66,3 +66,11 @@ textarea:focus, input:focus {
     box-shadow: 0 0 0 0;
     outline: 0;
 }
+
+img {
+    max-width:40px;
+    max-height:40px;
+    width: auto;
+    height: auto;
+    margin-top: 10px;
+}
