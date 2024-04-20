@@ -90,9 +90,9 @@ func (h *Handlers) GetTarefas(c *fiber.Ctx) error {
 	// Obter tarefas do banco de dados
 	var rows *sql.Rows
 	if search != "" {
-		rows, err = h.DB.Query("SELECT * FROM ToDos WHERE userid = $1 AND LOWER(title) LIKE '%' || LOWER($2) || '%' ORDER BY hora, title", userID, search)
+		rows, err = h.DB.Query("SELECT * FROM ToDos WHERE userid = $1 AND LOWER(title) LIKE '%' || LOWER($2) || '%' ORDER BY hora::time, title", userID, search)
 	} else {
-		rows, err = h.DB.Query("SELECT * FROM ToDos WHERE userid = $1 ORDER BY hora, title", userID)
+		rows, err = h.DB.Query("SELECT * FROM ToDos WHERE userid = $1 ORDER BY hora::time, title", userID)
 	}
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{

@@ -14,22 +14,43 @@ export async function carregarTarefas(search = '') {
             data.forEach(tarefa => {
                 const div = document.createElement('div');
                 div.classList.add('Tarefa');
-                div.innerHTML = `
-                <div class="dados">
-                    <input type="checkbox" id="tarefa-${tarefa.id}" ${tarefa.completed ? 'checked' : ''}>
-                    <p>${tarefa.title}</p>
-                </div>
-                <div class="dados">
-                    <p>${tarefa.hora}</p>
-                    <button id="deletar_tarefa">X</button>
-                </div>
-                `;
+                // Verificar se hora é nula
+                if (tarefa.hora == null) {
+                    div.innerHTML = `
+                    <div class="dados">
+                        <input type="checkbox" id="tarefa-${tarefa.id}" ${tarefa.completed ? 'checked' : ''}>
+                        <p>${tarefa.title}</p>
+                    </div>
+                    <div class="dados">
+                        <button id="deletar_tarefa">X</button>
+                    </div>
+                    `;
+                } else {
+                    div.innerHTML = `
+                    <div class="dados">
+                        <input type="checkbox" id="tarefa-${tarefa.id}" ${tarefa.completed ? 'checked' : ''}>
+                        <p>${tarefa.title}</p>
+                    </div>
+                    <div class="dados">
+                        <p>${tarefa.hora}</p>
+                        <button id="deletar_tarefa">X</button>
+                    </div>
+                    `;
+                }
                 
                 // Adicionar evento para marcar tarefa como concluída
                 div.querySelector('input').addEventListener('change', async function () {
                     tarefa.completed = this.checked;
                     await backendAPI.put(`api/tarefa/${tarefa.id}`, tarefa);
                     carregarTarefas(search);
+                });
+                // Adicionar evento para deletar tarefa
+                div.querySelector('button').addEventListener('click', async function () {
+                    const confirmacao = confirm('Tem certeza que deseja deletar a tarefa?');
+                    if (confirmacao) {
+                        await backendAPI.delete(`api/tarefa/${tarefa.id}`);
+                        carregarTarefas(search);
+                    }
                 });
                 
                 if (tarefa.completed) {
