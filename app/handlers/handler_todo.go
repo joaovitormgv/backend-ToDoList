@@ -14,7 +14,7 @@ import (
 
 func IsValidHora(hora string) bool {
 	_, err := time.Parse("15:04", hora)
-	return err == nil
+	return err == nil && len(hora) == 5
 }
 
 func (h *Handlers) CreateTarefa(c *fiber.Ctx) error {
@@ -49,9 +49,9 @@ func (h *Handlers) CreateTarefa(c *fiber.Ctx) error {
 	todo.UserId = userID
 
 	// Verificar se a hora é válida
-	if todo.Hora != "" && !IsValidHora(todo.Hora) {
+	if todo.Hora != "" && !IsValidHora(todo.Hora) && len(todo.Hora) != 5 {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Hora inválida",
+			"error": "Hora inválida. Formato: HH:MM",
 		})
 	}
 
@@ -90,9 +90,9 @@ func (h *Handlers) GetTarefas(c *fiber.Ctx) error {
 	// Obter tarefas do banco de dados
 	var rows *sql.Rows
 	if search != "" {
-		rows, err = h.DB.Query("SELECT * FROM ToDos WHERE userid = $1 AND LOWER(title) LIKE '%' || LOWER($2) || '%' ORDER BY hora::time, title", userID, search)
+		rows, err = h.DB.Query("SELECT * FROM ToDos WHERE userid = $1 AND LOWER(title) LIKE '%' || LOWER($2) || '%' ORDER BY hora, title", userID, search)
 	} else {
-		rows, err = h.DB.Query("SELECT * FROM ToDos WHERE userid = $1 ORDER BY hora::time, title", userID)
+		rows, err = h.DB.Query("SELECT * FROM ToDos WHERE userid = $1 ORDER BY hora, title", userID)
 	}
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{

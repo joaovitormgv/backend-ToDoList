@@ -15,31 +15,90 @@ export async function carregarTarefas(search = '') {
                 const div = document.createElement('div');
                 div.classList.add('Tarefa');
                 // Verificar se hora é nula
+                console.log(tarefa.hora);
                 if (tarefa.hora == null) {
                     div.innerHTML = `
                     <div class="dados">
                         <input type="checkbox" id="tarefa-${tarefa.id}" ${tarefa.completed ? 'checked' : ''}>
-                        <p>${tarefa.title}</p>
+                        <p class="tarefa-titulo">${tarefa.title}</p>
                     </div>
                     <div class="dados">
-                        <button id="deletar_tarefa">X</button>
-                        <a href="Tela_nota.html?id=${tarefa.id}"><button id="editar_tarefa">Notas</button></a>
+                        <p class="tarefa-hora">Dia todo</p>
+                            <a class="deletar-tarefa""><img src="../assets/trash-icon.svg"></img</a>
+                            <a href="Tela_nota.html?id=${tarefa.id}"><img src="../assets/edit-icon.svg"></a>
                     </div>
                     `;
                 } else {
                     div.innerHTML = `
                     <div class="dados">
                         <input type="checkbox" id="tarefa-${tarefa.id}" ${tarefa.completed ? 'checked' : ''}>
-                        <p>${tarefa.title}</p>
+                        <p class="tarefa-titulo">${tarefa.title}</p>
                     </div>
                     <div class="dados">
-                        <p>${tarefa.hora}</p>
-                        <button id="deletar_tarefa">X</button>
-                        <a href="Tela_nota.html?id=${tarefa.id}"><button id="editar_tarefa">Notas</button></a>
+                        <p class="tarefa-hora">${tarefa.hora}</p>
+                            <a class="deletar-tarefa""><img src="../assets/trash-icon.svg"></img</a>
+                            <a href="Tela_nota.html?id=${tarefa.id}"><img src="../assets/edit-icon.svg"></a>
                     </div>
                     `;
                 }
-                
+
+            // Mudar titulo
+                const titleElement = div.querySelector('.tarefa-titulo');
+                titleElement.addEventListener('click', async function() {
+                    const editInput = document.createElement('input');
+                    editInput.type = 'text';
+                    editInput.value = tarefa.title;
+                    editInput.classList.add('input_editado');
+                    titleElement.replaceWith(editInput);
+                    editInput.focus();
+
+                    editInput.addEventListener('keydown', async function(event) {
+                        if (event.key === 'Enter') {
+                            tarefa.title = editInput.value;
+                            // Atualizar tarefa
+                            await backendAPI.put(`api/tarefa/${tarefa.id}`, {title: tarefa.title, completed: tarefa.completed});
+                            carregarTarefas(search);
+                        }
+                    });
+
+                    editInput.addEventListener('blur', async function() {
+                        tarefa.title = editInput.value;
+                        // Atualizar tarefa
+                        await backendAPI.put(`api/tarefa/${tarefa.id}`, {title: tarefa.title, completed: tarefa.completed});
+                        carregarTarefas(search);
+                    });
+                });
+            
+            // Mudar horário
+                const timeElement = div.querySelector('.tarefa-hora');
+                timeElement.addEventListener('click', function() {
+                    const editInput = document.createElement('input');
+                    editInput.type = 'text';
+                    editInput.value = tarefa.hora;
+                    editInput.classList.add('input_editado'); 
+                    timeElement.replaceWith(editInput); 
+
+                    editInput.addEventListener('keydown', async function(event) {
+                        if (event.key === 'Enter') {
+                            tarefa.hora = editInput.value;
+                            // Atualizar tarefa
+                            await backendAPI.put(`api/tarefa/${tarefa.id}`, {hora: tarefa.hora, tarefa: tarefa.completed});
+                            carregarTarefas(search);
+                        }
+                    });
+
+                    editInput.addEventListener('blur', async function() {
+                        tarefa.hora = editInput.value;
+                        // Atualizar tarefa
+                        await backendAPI.put(`api/tarefa/${tarefa.id}`, {hora: tarefa.hora, tarefa: tarefa.completed});
+                        carregarTarefas(search);
+                    });
+            
+                    editInput.focus();
+                });
+
+
+
                 // Adicionar evento para marcar tarefa como concluída
                 div.querySelector('input').addEventListener('change', async function () {
                     tarefa.completed = this.checked;
@@ -47,7 +106,7 @@ export async function carregarTarefas(search = '') {
                     carregarTarefas(search);
                 });
                 // Adicionar evento para deletar tarefa
-                div.querySelector('button').addEventListener('click', async function () {
+                div.querySelector('.deletar-tarefa').addEventListener('click', async function () {
                     const confirmacao = confirm('Tem certeza que deseja deletar a tarefa?');
                     if (confirmacao) {
                         await backendAPI.delete(`api/tarefa/${tarefa.id}`);
