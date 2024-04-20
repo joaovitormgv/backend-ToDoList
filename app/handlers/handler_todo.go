@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"database/sql"
 	"fmt"
 	"strings"
 	"time"
@@ -83,8 +84,16 @@ func (h *Handlers) GetTarefas(c *fiber.Ctx) error {
 
 	userID := sess.Get("user_id").(int)
 
+	// Obter o parâmtro de pesquisa da url
+	search := c.Query("search")
+
 	// Obter tarefas do banco de dados
-	rows, err := h.DB.Query("SELECT * FROM ToDos WHERE userid = $1 ORDER BY hora, title", userID)
+	var rows *sql.Rows
+	if search != "" {
+		rows, err = h.DB.Query("SELECT * FROM ToDos WHERE userid = $1 AND LOWER(title) LIKE '%' || LOWER($2) || '%' ORDER BY hora, title", userID, search)
+	} else {
+		rows, err = h.DB.Query("SELECT * FROM ToDos WHERE userid = $1 ORDER BY hora, title", userID)
+	}
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
@@ -265,48 +274,4 @@ func (h *Handlers) DeleteTarefa(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"message": "Tarefa excluída com sucesso",
 	})
-}
-
-func (h *Handlers) SearchTarefas(c *fiber.Ctx) error {
-	// Recuperar a sessão do usuário
-	sess, err := h.Store.Get(c)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": err.Error(),
-		})
-	}
-
-	// Obter o ID do usuário da sessão
-	userID := sess.Get("user_id").(int)
-
-	todo := &models.ToDo{}
-	err = c.BodyParser(todo)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": err.Error(),
-		})
-	}
-
-	// Obter tarefas do banco de dados
-	rows, err := h.DB.Query("SELECT * FROM ToDos WHERE userid = $1 AND LOWER(title) LIKE '%' || LOWER($2) || '%' ORDER BY hora, title", userID, todo.Title)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": err.Error(),
-		})
-	}
-	defer rows.Close()
-
-	todos := []models.ToDo{}
-	for rows.Next() {
-		todo := models.ToDo{}
-		err := rows.Scan(&todo.UserId, &todo.Id, &todo.Title, &todo.Description, &todo.Hora, &todo.Completed)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": err.Error(),
-			})
-		}
-		todos = append(todos, todo)
-	}
-
-	return c.JSON(todos)
 }

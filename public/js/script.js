@@ -37,5 +37,17 @@ export const backendAPI = {
         });
         const data = await response.json();
         return data;
+    }, 
+
+    async getWithBody(endpoint, body) {
+        const response = await fetch(`${API_URL}/${endpoint}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        });
+        const data = await response.json();
+        return data;
     }
 }
