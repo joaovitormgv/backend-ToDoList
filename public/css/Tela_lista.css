@@ -95,5 +95,17 @@ h1{
 }
 
 .Barra_de_pesquisa button:hover {
-    background-color: #8b52ff;
+    background-color: #0000EE;
+}
+
+#Logout, #Ir_para_a_pagina_de_adicionar_tarefa {
+    background-color:red;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#Ir_para_a_pagina_de_adicionar_tarefa {
+    background-color: #FA5608;
 }
